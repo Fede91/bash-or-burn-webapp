@@ -7,9 +7,10 @@ import SkipLink from './SkipLink';
 
 interface LayoutProps {
   gauge: ReactNode;
+  wizard: ReactNode;
 }
 
-export default function Layout({ gauge }: LayoutProps) {
+export default function Layout({ gauge, wizard }: LayoutProps) {
   return (
     <>
       <SkipLink />
@@ -27,7 +28,9 @@ export default function Layout({ gauge }: LayoutProps) {
           <Intro />
           {gauge}
         </div>
-        <section id="wizard" className="wizard" aria-label={t('wizard.region')} tabIndex={-1} />
+        <section id="wizard" className="wizard" aria-label={t('wizard.region')} tabIndex={-1}>
+          {wizard}
+        </section>
       </main>
       <Grain />
     </>
