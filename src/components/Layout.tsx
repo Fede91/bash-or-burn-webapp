@@ -9,14 +9,15 @@ import SkipLink from './SkipLink';
 interface LayoutProps {
   gauge: ReactNode;
   wizard: ReactNode;
+  started: boolean;
 }
 
-export default function Layout({ gauge, wizard }: LayoutProps) {
+export default function Layout({ gauge, wizard, started }: LayoutProps) {
   return (
     <>
       <SkipLink />
       <Nav />
-      <main id="top" className="split">
+      <main id="top" className="split" data-started={started ? 'true' : undefined}>
         <div className="left">
           <div className="cols" aria-hidden="true">
             <span />
@@ -26,7 +27,7 @@ export default function Layout({ gauge, wizard }: LayoutProps) {
             <span />
             <span />
           </div>
-          <Intro />
+          <Intro started={started} />
           {gauge}
         </div>
         <section id="wizard" className="wizard" aria-label={t('wizard.region')} tabIndex={-1}>

@@ -10,6 +10,7 @@ interface WizardProps {
   answers: Answers;
   onAnswer: (questionId: string, answerId: string) => void;
   onFinish: () => void;
+  onStepChange?: (step: number) => void;
 }
 
 const TOTAL = questions.length;
@@ -23,7 +24,7 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
+export default function Wizard({ answers, onAnswer, onFinish, onStepChange }: WizardProps) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -41,8 +42,19 @@ export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
       mounted.current = true;
       return;
     }
-    headingRef.current?.focus();
+    const heading = headingRef.current;
+    heading?.focus({ preventScroll: true });
+    const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+    if (step === 0) {
+      if (typeof window.scrollTo === 'function') window.scrollTo({ top: 0, behavior });
+    } else if (typeof heading?.scrollIntoView === 'function') {
+      heading.scrollIntoView({ block: 'start', behavior });
+    }
   }, [step]);
+
+  useEffect(() => {
+    onStepChange?.(step);
+  }, [step, onStepChange]);
 
   const question = questions[step];
   if (!question) return null;

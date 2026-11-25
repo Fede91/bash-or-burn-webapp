@@ -35,6 +35,8 @@ describe('shared ?v= link', () => {
     );
     expect(screen.getByRole('button', { name: t('share.button') })).toBeInTheDocument();
     expect(document.getElementById('q-title')).toHaveFocus();
+    expect(container.querySelector('.split')).toHaveAttribute('data-started', 'true');
+    expect(container.querySelector('.intro')).toHaveAttribute('inert');
   });
 
   it('starts the wizard and clears the param from the shared view', () => {

@@ -27,8 +27,10 @@
   --font-sans: 'Archivo', Helvetica, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --max-width: 1400px;
-  --gutter: 32px;
+  /* Fluid scale: 1 up to 1400px viewport width, +0.0005 per px, capped at 1.9 (reached at 3200px). */
+  --fluid-k: 1;
+  --max-width: clamp(1400px, 86vw, 2660px);
+  --gutter: clamp(20px, calc(20px + (100vw - 720px) * 0.0176), 32px);
 
   --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-out-3: cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -38,6 +40,23 @@
   --verdict-let-it-write: #f9e361;
   --verdict-bash-1call: #fca942;
   --verdict-burn: #f36451;
+
+  /* Result evaluation block: verdict colour at 20% over --bg. */
+  --eval-bg-bash: #1b3833;
+  --eval-bg-let-it-write: #3a361e;
+  --eval-bg-bash-1call: #3a2b18;
+  --eval-bg-burn: #391d1b;
+  --eval-text: var(--text);
+  --eval-link: var(--accent-hover);
+  --eval-link-hover: var(--text);
+  --eval-border: var(--verdict); /* non-text only */
+}
+
+/* The ratio gives the unitless viewport width in px. Without support --fluid-k stays 1. */
+@supports (width: calc(tan(atan2(1px, 1px)) * 1px)) {
+  :root {
+    --fluid-k: clamp(1, 1 + (tan(atan2(100vw, 1px)) - 1400) * 0.0005, 1.9);
+  }
 }
 
 /* --verdict is the mapped current value, not a fifth token. */
@@ -52,4 +71,17 @@
 }
 [data-verdict='burn'] {
   --verdict: var(--verdict-burn);
+}
+
+[data-verdict='bash'] {
+  --eval-bg: var(--eval-bg-bash);
+}
+[data-verdict='let-it-write'] {
+  --eval-bg: var(--eval-bg-let-it-write);
+}
+[data-verdict='bash-1call'] {
+  --eval-bg: var(--eval-bg-bash-1call);
+}
+[data-verdict='burn'] {
+  --eval-bg: var(--eval-bg-burn);
 }

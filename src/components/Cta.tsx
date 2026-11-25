@@ -7,7 +7,7 @@ export const CTA_URL = 'https://federicobagato.it';
 
 export default function Cta({ verdict }: { verdict: Verdict }) {
   return (
-    <section className="cta">
+    <section className="cta" data-verdict={verdict}>
       <p className="cta-context">{t(`cta.context.${shareKeySuffix(verdict)}` as MessageKey)}</p>
       <a
         className="cta-link"
