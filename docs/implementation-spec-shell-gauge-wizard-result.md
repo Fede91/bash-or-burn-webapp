@@ -1,5 +1,7 @@
 # Implementation spec: shell, gauge, wizard, result
 
+See also: [design spec: responsive and result emphasis](./design-spec-responsive-and-result-emphasis.md).
+
 Layout A "Strumento" ([decision 0003](../../wiki/decisions/0003-layout-strumento.md)). Source of truth for values: artifact `mockup-a-strumento.html`, design system `design-system-federicobagato-it.md`, [visual design](../../wiki/specs/visual-design.md), `verdict-colours.md`, `copy-deck.md` (string keys). Where this document and the mockup differ, **this document wins** and the difference is listed in section 14.
 
 Conventions: `px` for everything the mockup states in `px`; token names are the CSS custom properties already in `src/styles/tokens.css`. Strings always come from `src/i18n/` (key in brackets). Copy never lives in components.
