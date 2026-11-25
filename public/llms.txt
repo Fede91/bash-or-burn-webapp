@@ -1,0 +1,7 @@
+# Bash or Burn
+
+> Sette domande sul tuo caso d'uso. Alla fine sai se ti serve un agente o se basta uno script. Stop burning tokens on jobs a script can do.
+
+Bash or Burn is a free, browser-only test. Seven questions about a use case lead to one of four verdicts: Bash, Bash + 1 call, Let it write the bash, or Burn (use an agent). Answers stay in the browser.
+
+- [Home](https://bashorburn.federicobagato.it/): the test
