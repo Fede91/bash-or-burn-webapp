@@ -85,7 +85,9 @@ describe('Wizard', () => {
     choose('c');
     next();
     expect(screen.queryByText(t('wizard.error.none'))).not.toBeInTheDocument();
-    expect(form()).toHaveAttribute('data-finished', 'true');
+    expect(document.getElementById('q-title')).toHaveFocus();
+    expect(document.querySelector('[data-verdict]')).not.toBeNull();
+    expect(form()).toBeNull();
   });
 
   describe('view transitions', () => {

@@ -1,0 +1,12 @@
+{
+  "toVerify": true,
+  "verifyNote": "TO VERIFY ON LAUNCH DAY against official price lists",
+  "asOf": "2026-11-25",
+  "usdToEur": 0.86,
+  "currencies": ["eur", "usd"],
+  "models": [
+    { "id": "haiku-4-5", "label": "Claude Haiku 4.5", "inPerM": 1, "outPerM": 5 },
+    { "id": "sonnet-5-5", "label": "Claude Sonnet 5.5", "inPerM": 3, "outPerM": 15 },
+    { "id": "opus-5-5", "label": "Claude Opus 5.5", "inPerM": 5, "outPerM": 25 }
+  ]
+}

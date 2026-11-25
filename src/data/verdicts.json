@@ -1,0 +1,45 @@
+{
+  "bash": {
+    "color": "#61edcc",
+    "cssVar": "--verdict-bash",
+    "name": "verdict.bash.name",
+    "descriptor": "verdict.bash.descriptor",
+    "title": { "line1": "verdict.bash.title.line1", "line2": "verdict.bash.title.line2" },
+    "message": "verdict.bash.message",
+    "hasCode": true
+  },
+  "bash-1call": {
+    "color": "#fca942",
+    "cssVar": "--verdict-bash-1call",
+    "name": "verdict.bash1call.name",
+    "descriptor": "verdict.bash1call.descriptor",
+    "title": {
+      "line1": "verdict.bash1call.title.line1",
+      "line2": "verdict.bash1call.title.line2"
+    },
+    "message": "verdict.bash1call.message",
+    "hasCode": false
+  },
+  "burn": {
+    "color": "#f36451",
+    "cssVar": "--verdict-burn",
+    "name": "verdict.burn.name",
+    "descriptor": "verdict.burn.descriptor",
+    "title": { "line1": "verdict.burn.title.line1", "line2": "verdict.burn.title.line2" },
+    "when": "verdict.burn.when",
+    "message": "verdict.burn.message",
+    "hasCode": false
+  },
+  "let-it-write": {
+    "color": "#f9e361",
+    "cssVar": "--verdict-let-it-write",
+    "name": "verdict.letItWrite.name",
+    "descriptor": "verdict.letItWrite.descriptor",
+    "title": {
+      "line1": "verdict.letItWrite.title.line1",
+      "line2": "verdict.letItWrite.title.line2"
+    },
+    "message": "verdict.letItWrite.message",
+    "hasCode": true
+  }
+}

@@ -8,6 +8,7 @@ import Question from './Question';
 interface WizardProps {
   answers: Answers;
   onAnswer: (questionId: string, answerId: string) => void;
+  onFinish: () => void;
 }
 
 const LAST = questions.length - 1;
@@ -20,10 +21,9 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-export default function Wizard({ answers, onAnswer }: WizardProps) {
+export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState(false);
-  const [finished, setFinished] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const mounted = useRef(false);
 
@@ -57,20 +57,14 @@ export default function Wizard({ answers, onAnswer }: WizardProps) {
     }
     if (step === LAST) {
       setError(false);
-      setFinished(true);
+      onFinish();
       return;
     }
     goTo(step + 1);
   }
 
   return (
-    <form
-      id="wizard-form"
-
-      noValidate
-      data-finished={finished}
-      onSubmit={handleSubmit}
-    >
+    <form id="wizard-form" noValidate onSubmit={handleSubmit}>
       <span className="numeral" aria-hidden="true">
         {pad(step + 1)}
       </span>

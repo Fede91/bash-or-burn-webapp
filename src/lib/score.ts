@@ -1,4 +1,5 @@
 import { questions } from '../data/questions';
+import type { MessageKey } from '../i18n';
 import { BASH_MAX, BURN_MIN, zoneFor, type Verdict, type Zone } from './gauge';
 
 /** Question id to answer id. Unanswered questions are absent. */
@@ -61,4 +62,29 @@ export function score(answers: Answers): Score {
     verdict: finalVerdict(answers),
     topFactors,
   };
+}
+
+/**
+ * The two factors shown on the result. Bash + 1 call comes from the `ibrido` flag
+ * plus Q3, not from the total, so it shows Q4 and Q3 instead of the largest points.
+ */
+export function resultFactors(answers: Answers): Factor[] {
+  const { verdict, topFactors } = score(answers);
+  if (verdict !== 'bash-1call') return topFactors;
+  const all = answeredFactors(answers);
+  return ['q4', 'q3'].flatMap((id) => all.filter((f) => f.questionId === id));
+}
+
+export interface FactorDetail {
+  /** 1-based question number. */
+  n: number;
+  title: MessageKey;
+  label: MessageKey;
+}
+
+export function factorDetail(factor: Factor): FactorDetail | null {
+  const index = questions.findIndex((q) => q.id === factor.questionId);
+  const question = questions[index];
+  const answer = question?.answers.find((a) => a.id === factor.answerId);
+  return question && answer ? { n: index + 1, title: question.title, label: answer.label } : null;
 }

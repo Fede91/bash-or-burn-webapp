@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 import { DEFAULT_LANG, setLang, t } from './i18n';
 
@@ -39,5 +39,24 @@ describe('App shell', () => {
   it('keeps html lang on the default language', () => {
     render(<App />);
     expect(document.documentElement.lang).toBe(DEFAULT_LANG);
+  });
+
+  it('shows the result with the final gauge, then restart resets everything', () => {
+    render(<App />);
+    const form = () => document.getElementById('wizard-form') as HTMLFormElement;
+    for (let i = 0; i < 7; i++) {
+      fireEvent.click(screen.getAllByRole('radio')[2] as HTMLElement);
+      fireEvent.submit(form());
+    }
+    expect(screen.getByText(t('gauge.label.final'))).toBeInTheDocument();
+    expect(document.querySelector('[data-verdict="burn"]')).not.toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: t('result.restart') }));
+    expect(screen.queryByText(t('gauge.label.final'))).not.toBeInTheDocument();
+    expect(screen.getByText('01 / 07')).toBeInTheDocument();
+    expect(document.getElementById('q-title')).toHaveFocus();
+    expect(screen.getByText(t('gauge.live.reset'))).toBeInTheDocument();
+    expect(screen.getByText(t('gauge.empty'))).toBeInTheDocument();
+    for (const radio of screen.getAllByRole('radio')) expect(radio).not.toBeChecked();
   });
 });

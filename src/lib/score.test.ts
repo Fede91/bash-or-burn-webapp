@@ -2,7 +2,15 @@ import { describe, expect, it } from 'vitest';
 import en from '../i18n/en.json';
 import it_ from '../i18n/it.json';
 import { questions } from '../data/questions';
-import { finalVerdict, flagsOf, provisionalZone, runningTotal, score, type Answers } from './score';
+import {
+  finalVerdict,
+  flagsOf,
+  provisionalZone,
+  resultFactors,
+  runningTotal,
+  score,
+  type Answers,
+} from './score';
 
 const all = (id: string): Answers => Object.fromEntries(questions.map((q) => [q.id, id]));
 const pts = (qid: string, aid: string) =>
@@ -146,5 +154,19 @@ describe('questions data', () => {
     );
     expect(flagged).toEqual(['q4.b:ibrido']);
     expect(noted).toEqual(['q7.b']);
+  });
+});
+
+describe('resultFactors', () => {
+  it('equals topFactors for every verdict except Bash + 1 call', () => {
+    for (const a of [all('a'), all('c'), pick('bbbcbbb')]) {
+      expect(resultFactors(a)).toEqual(score(a).topFactors);
+    }
+  });
+
+  it('shows Q4 then Q3 on Bash + 1 call', () => {
+    const a = pick('aabbaaa');
+    expect(finalVerdict(a)).toBe('bash-1call');
+    expect(resultFactors(a).map((f) => f.questionId)).toEqual(['q4', 'q3']);
   });
 });
