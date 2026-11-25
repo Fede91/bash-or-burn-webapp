@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+@import './styles/fonts.css';
+@import './styles/tokens.css';
+@import './styles/layout.css';
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-bg-overlay: var(--bg-overlay);
+  --color-bg-surface: var(--bg-surface);
+  --color-text: var(--text);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-text-ghost: var(--text-ghost);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-underline: var(--accent-underline);
+  --color-line: var(--line);
+  --color-line-grid: var(--line-grid);
+  --color-line-divider: var(--line-divider);
+  --color-line-strong: var(--line-strong);
+  --color-line-control: var(--line-control);
+  --color-verdict-bash: var(--verdict-bash);
+  --color-verdict-let-it-write: var(--verdict-let-it-write);
+  --color-verdict-bash-1call: var(--verdict-bash-1call);
+  --color-verdict-burn: var(--verdict-burn);
+  --color-verdict: var(--verdict);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@theme {
+  --radius-*: initial;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body {
+    @apply bg-bg font-sans text-text;
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--accent-hover);
+  }
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
