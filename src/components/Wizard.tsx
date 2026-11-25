@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { questions } from '../data/questions';
 import { t } from '../i18n';
+import { track } from '../lib/analytics';
 import type { Answers } from '../lib/score';
 import Question from './Question';
 
@@ -9,9 +10,11 @@ interface WizardProps {
   answers: Answers;
   onAnswer: (questionId: string, answerId: string) => void;
   onFinish: () => void;
+  onStepChange?: (step: number) => void;
 }
 
-const LAST = questions.length - 1;
+const TOTAL = questions.length;
+const LAST = TOTAL - 1;
 const pad = (n: number) => String(n).padStart(2, '0');
 
 function prefersReducedMotion(): boolean {
@@ -21,19 +24,37 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
+export default function Wizard({ answers, onAnswer, onFinish, onStepChange }: WizardProps) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const mounted = useRef(false);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    track('wizard_started');
+  }, []);
 
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
       return;
     }
-    headingRef.current?.focus();
+    const heading = headingRef.current;
+    heading?.focus({ preventScroll: true });
+    const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+    if (step === 0) {
+      if (typeof window.scrollTo === 'function') window.scrollTo({ top: 0, behavior });
+    } else if (typeof heading?.scrollIntoView === 'function') {
+      heading.scrollIntoView({ block: 'start', behavior });
+    }
   }, [step]);
+
+  useEffect(() => {
+    onStepChange?.(step);
+  }, [step, onStepChange]);
 
   const question = questions[step];
   if (!question) return null;
@@ -55,6 +76,7 @@ export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
       e.currentTarget.querySelector<HTMLInputElement>('input[type="radio"]')?.focus();
       return;
     }
+    track('question_answered', { step_index: step + 1, step_total: TOTAL });
     if (step === LAST) {
       setError(false);
       onFinish();

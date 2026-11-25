@@ -6,10 +6,11 @@ import Footer from './Footer';
 beforeEach(() => setLang(DEFAULT_LANG));
 
 describe('Footer', () => {
-  it('marks the legal line as a placeholder', () => {
+  it('shows the VAT number and none of the removed copy', () => {
     const { container } = render(<Footer />);
-    const legal = container.querySelector('[data-placeholder="legal"]');
-    expect(legal).toHaveTextContent(t('footer.legal.placeholder'));
+    expect(container).toHaveTextContent('P.IVA IT05747390283');
+    expect(container.querySelector('[data-placeholder]')).toBeNull();
+    expect(container.querySelectorAll('p')).toHaveLength(1);
   });
 
   it('renders on the question and result screens', () => {

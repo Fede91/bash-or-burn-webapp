@@ -1,19 +1,14 @@
 import { t } from '../i18n';
+import { track } from '../lib/analytics';
 import { CTA_URL } from './Cta';
+
+const PIVA = 'IT05747390283';
 
 export default function Footer() {
   return (
     <footer className="foot">
-      <p>{t('footer.made')}</p>
-      <p>{t('footer.nomodel')}</p>
-      <p>{t('footer.privacy')}</p>
-      <p>
-        {/* PLACEHOLDER: legal line pending P.IVA */}
-        <span data-placeholder="legal">
-          {t('footer.legal', { piva: t('footer.legal.placeholder') })}
-        </span>
-      </p>
-      <a href={CTA_URL} rel="noopener">
+      <p>{t('footer.legal', { piva: PIVA })}</p>
+      <a href={CTA_URL} rel="noopener" onClick={() => track('cta_clicked', { location: 'footer' })}>
         {t('footer.link')}
       </a>
     </footer>

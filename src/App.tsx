@@ -11,6 +11,7 @@ import {
   resetAnnouncement,
 } from './i18n/gauge-messages';
 import { t } from './i18n';
+import { track } from './lib/analytics';
 import { parseVerdictParam } from './lib/share';
 import { finalVerdict, provisionalZone, runningTotal, type Answers } from './lib/score';
 
@@ -29,6 +30,8 @@ export default function App() {
   const [answers, setAnswers] = useState<Answers>({});
   const [finished, setFinished] = useState(false);
   const [resets, setResets] = useState(0);
+  const [wizardStep, setWizardStep] = useState(0);
+  const started = link.kind === 'valid' || finished || wizardStep >= 1;
 
   const total = runningTotal(answers);
   const answered = Object.keys(answers).length !== 0;
@@ -46,18 +49,21 @@ export default function App() {
   function startTest() {
     clearVerdictParam();
     setLink({ kind: 'none' });
+    setWizardStep(0);
     setResets((n) => n + 1);
   }
 
   function restart() {
     setAnswers({});
     setFinished(false);
+    setWizardStep(0);
     setResets((n) => n + 1);
   }
 
   if (link.kind === 'valid') {
     return (
       <Layout
+        started={started}
         gauge={<Gauge total={0} verdict={link.verdict} answered final shared announcement="" />}
         wizard={<SharedResult verdict={link.verdict} onStart={startTest} />}
       />
@@ -66,6 +72,7 @@ export default function App() {
 
   return (
     <Layout
+      started={started}
       gauge={
         <Gauge
           total={total}
@@ -90,10 +97,14 @@ export default function App() {
             )}
             <Wizard
               answers={answers}
+              onStepChange={setWizardStep}
               onAnswer={(questionId, answerId) =>
                 setAnswers((prev) => ({ ...prev, [questionId]: answerId }))
               }
-              onFinish={() => setFinished(true)}
+              onFinish={() => {
+                track('verdict_reached', { verdict: finalVerdict(answers) });
+                setFinished(true);
+              }}
             />
           </>
         )

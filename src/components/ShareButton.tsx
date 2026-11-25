@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import type { Verdict } from '../lib/gauge';
 import { t, type MessageKey } from '../i18n';
+import { track, type ShareMethod } from '../lib/analytics';
 import { linkedinIntentUrl, linkedinText, shareUrl, xIntentUrl, xText } from '../lib/share';
 
 const PANEL_ID = 'share-panel';
@@ -23,7 +24,8 @@ export default function ShareButton({ verdict, children }: ShareButtonProps) {
   const [open, setOpen] = useState(false);
   const [feedback, setFeedback] = useState<MessageKey | null>(null);
 
-  async function report(text: string, ok: MessageKey) {
+  async function report(text: string, ok: MessageKey, method: ShareMethod) {
+    track('result_shared', { verdict, method });
     setFeedback((await copy(text)) ? ok : 'state.copyFail');
   }
 
@@ -31,6 +33,7 @@ export default function ShareButton({ verdict, children }: ShareButtonProps) {
     if (typeof navigator.share === 'function') {
       try {
         await navigator.share({ text: xText(verdict), url: shareUrl(verdict) });
+        track('result_shared', { verdict, method: 'native' });
         return;
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') return;
@@ -59,6 +62,7 @@ export default function ShareButton({ verdict, children }: ShareButtonProps) {
           href={xIntentUrl(verdict)}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => track('result_shared', { verdict, method: 'x' })}
         >
           {t('share.x')}
           <span className="sr-only">{t('a11y.share.x')}</span>
@@ -68,7 +72,7 @@ export default function ShareButton({ verdict, children }: ShareButtonProps) {
           href={linkedinIntentUrl(verdict)}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => report(linkedinText(verdict), 'share.linkedin.copied')}
+          onClick={() => report(linkedinText(verdict), 'share.linkedin.copied', 'linkedin')}
         >
           {t('share.linkedin')}
           <span className="sr-only">{t('a11y.share.linkedin')}</span>
@@ -76,7 +80,7 @@ export default function ShareButton({ verdict, children }: ShareButtonProps) {
         <button
           type="button"
           className="btn btn-outline"
-          onClick={() => report(shareUrl(verdict), 'share.copied')}
+          onClick={() => report(shareUrl(verdict), 'share.copied', 'copy')}
         >
           {t('share.copy')}
         </button>

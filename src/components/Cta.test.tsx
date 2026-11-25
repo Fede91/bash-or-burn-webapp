@@ -18,6 +18,11 @@ describe('Cta', () => {
     expect(link).not.toHaveAttribute('target');
   });
 
+  it.each(slugs)('%s: carries the verdict slug for the evaluation background', (slug) => {
+    const { container } = render(<Cta verdict={slug} />);
+    expect(container.querySelector('section.cta')).toHaveAttribute('data-verdict', slug);
+  });
+
   it.each(slugs)('%s: Result shows share, CTA and restart', (slug) => {
     render(<Result answers={ANSWERS[slug]} onRestart={() => {}} />);
     expect(document.querySelector(`[data-verdict="${slug}"]`)).not.toBeNull();

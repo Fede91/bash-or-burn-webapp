@@ -106,14 +106,16 @@ describe('Result details', () => {
 });
 
 describe('verdict colour in CSS', () => {
-  it('uses var(--verdict) only for the result dot border and title line 2', () => {
+  it('uses var(--verdict) only for the result dot border, title line 2 and the cta left rule', () => {
     const css = readFileSync(resolve(__dirname, '../styles/layout.css'), 'utf8');
     const rules = Array.from(css.matchAll(/([^{}]+)\{([^{}]*var\(--verdict\)[^{}]*)\}/g));
     const found = rules.map((m) => `${(m[1] ?? '').trim()} :: ${(m[2] ?? '').trim()}`);
     expect(found).toEqual([
       '.result-dot :: ' + found[0]?.split(' :: ')[1],
       '.result-line-2 :: color: var(--verdict);',
+      '.cta :: ' + found[2]?.split(' :: ')[1],
     ]);
+    expect(found[2]).toContain('border-left: 4px solid var(--verdict)');
     expect(found[0]).toContain('border: 3.5px solid var(--verdict)');
   });
 });

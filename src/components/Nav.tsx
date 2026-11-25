@@ -1,5 +1,7 @@
 import { t } from '../i18n';
+import { track } from '../lib/analytics';
 import { splitTrailingArrow } from '../lib/gauge';
+import { CTA_URL } from './Cta';
 
 export default function Nav() {
   const { label, arrow } = splitTrailingArrow(t('nav.link'));
@@ -9,9 +11,12 @@ export default function Nav() {
         <a className="brand" href="#top">
           {t('nav.brand')}
         </a>
-        <span className="brand-role">{t('nav.role')}</span>
       </div>
-      <a className="nav-link" href="https://federicobagato.it">
+      <a
+        className="nav-link"
+        href={CTA_URL}
+        onClick={() => track('cta_clicked', { location: 'nav' })}
+      >
         {label}
         {arrow && (
           <span className="arrow" aria-hidden="true">
