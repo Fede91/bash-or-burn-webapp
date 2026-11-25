@@ -1,11 +1,12 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import { questions } from '../data/questions';
 import { verdicts } from '../data/verdicts';
 import { t, type MessageKey } from '../i18n';
 import { formatTotal } from '../lib/gauge';
 import { factorDetail, resultFactors, score, type Answers, type Factor } from '../lib/score';
-import Calculator from './Calculator';
-import CodeExample from './CodeExample';
+import Cta from './Cta';
+import { ResultHeader, ResultSections, Section } from './ResultParts';
+import ShareButton from './ShareButton';
 
 interface ResultProps {
   answers: Answers;
@@ -37,14 +38,6 @@ function FactorRow({ factor }: { factor: Factor }) {
   );
 }
 
-function Section({ id, children }: { id: string; children: ReactNode }) {
-  return (
-    <section id={id} className="result-section">
-      {children}
-    </section>
-  );
-}
-
 export default function Result({ answers, onRestart }: ResultProps) {
   const { total, verdict } = score(answers);
   const data = verdicts[verdict];
@@ -68,17 +61,10 @@ export default function Result({ answers, onRestart }: ResultProps) {
         </div>
       </div>
 
-      <p className="result-badge">
-        <span className="result-dot" aria-hidden="true" />
-        {t('result.badge', { name: t(data.name) })}
-      </p>
-      <p className="result-descriptor">{t(data.descriptor)}</p>
-
-      <h2 id="q-title" className="result-title" tabIndex={-1}>
-        <span className="result-line">{t(data.title.line1)}</span>{' '}
-        <span className="result-line result-line-2">{t(data.title.line2)}</span>
-      </h2>
-      <p className="result-tagline">{t('result.tagline', { total: formatTotal(total) })}</p>
+      <ResultHeader
+        verdict={verdict}
+        tagline={t('result.tagline', { total: formatTotal(total) })}
+      />
 
       <nav aria-label={t('result.toc.label')}>
         <ul className="toc">
@@ -111,29 +97,15 @@ export default function Result({ answers, onRestart }: ResultProps) {
         )}
       </Section>
 
-      {data.hasCode && (verdict === 'bash' || verdict === 'let-it-write') && (
-        <Section id="code">
-          <p className="eyebrow" aria-hidden="true">
-            {'02'}
-          </p>
-          <CodeExample verdict={verdict} />
-        </Section>
-      )}
+      <ResultSections verdict={verdict} codeNumber={'02'} calcNumber={calcNumber} />
 
-      <Section id="calculator">
-        <Calculator verdict={verdict} number={calcNumber} />
-      </Section>
-
-      <div className="result-message">
-        {data.when && <p>{t(data.when)}</p>}
-        <p>{t(data.message)}</p>
-      </div>
-
-      <div className="actions">
+      <ShareButton verdict={verdict}>
         <button type="button" className="btn btn-outline" onClick={onRestart}>
           {t('result.restart')}
         </button>
-      </div>
+      </ShareButton>
+
+      <Cta verdict={verdict} />
     </div>
   );
 }

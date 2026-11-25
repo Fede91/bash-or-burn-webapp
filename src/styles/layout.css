@@ -160,6 +160,7 @@
   .wizard {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-content: end;
     padding: 120px var(--gutter) 40px;
   }
@@ -978,6 +979,115 @@
   @media (max-width: 900px) {
     .calc-fields {
       grid-template-columns: 1fr;
+    }
+  }
+
+  .btn:is(a) {
+    text-decoration: none;
+  }
+  .state {
+    margin: 0 0 32px;
+    padding: 18px 20px;
+    border: 1px solid var(--line-strong);
+    font: 15px / 1.55 var(--font-sans);
+    color: var(--text-body);
+  }
+  .state-title {
+    margin: 0 0 8px;
+    font: 600 22px / 1.2 var(--font-sans);
+    color: var(--text);
+  }
+  .state-body {
+    margin: 0;
+  }
+  .state .actions {
+    margin-top: 16px;
+  }
+  .state-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 64px var(--gutter);
+  }
+  .share {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .share-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+  }
+  .share-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .share-panel[hidden] {
+    display: none;
+  }
+  .share-feedback {
+    margin: 12px 0 0;
+    font: 400 13px / 1.4 var(--font-mono);
+    color: var(--text);
+  }
+  .cta {
+    margin-top: 56px;
+    padding: 32px 24px;
+    background: var(--bg-raised);
+    border-block: 1px solid var(--line-strong);
+  }
+  .cta-context {
+    margin: 0;
+    max-width: 38ch;
+    font: 16px / 1.55 var(--font-sans);
+    color: var(--text-body);
+  }
+  .cta-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--accent-underline);
+    font: 400 13px / 1.4 var(--font-mono);
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .cta-link:hover {
+    color: var(--accent-hover);
+  }
+  .cta-meta {
+    margin-left: 12px;
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    font: 400 11px / 1.4 var(--font-mono);
+    color: var(--text-muted);
+  }
+  .foot p {
+    margin: 0;
+  }
+  .foot a {
+    padding-block: 8px;
+    color: var(--text-muted);
+  }
+  .foot a:hover {
+    color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .cta {
+      padding: 28px 20px;
+    }
+    .cta-link {
+      white-space: normal;
     }
   }
 }

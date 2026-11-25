@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { t } from '../i18n';
+import Footer from './Footer';
 import Grain from './Grain';
 import Intro from './Intro';
 import Nav from './Nav';
@@ -30,6 +31,7 @@ export default function Layout({ gauge, wizard }: LayoutProps) {
         </div>
         <section id="wizard" className="wizard" aria-label={t('wizard.region')} tabIndex={-1}>
           {wizard}
+          <Footer />
         </section>
       </main>
       <Grain />

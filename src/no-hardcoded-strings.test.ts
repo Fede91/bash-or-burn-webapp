@@ -24,6 +24,11 @@ describe('source guards', () => {
     expect(src).not.toMatch(/\b(aria-label|alt|title)="[^"]+"/);
   });
 
+  it('has no copy-like literals in lib/share.ts', () => {
+    const src = readFileSync('src/lib/share.ts', 'utf8');
+    expect(src).not.toMatch(/(['"])[^'"\n]*[A-Za-zÀ-ÿ]+ [A-Za-zÀ-ÿ]+[^'"\n]*\1/);
+  });
+
   it('has no em or en dash under src/', () => {
     const offenders = walk('src')
       .filter((f) => /\.(tsx?|css|json|md)$/.test(f) && !f.endsWith('no-hardcoded-strings.test.ts'))
