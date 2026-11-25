@@ -1,0 +1,34 @@
+import { existsSync, readFileSync } from 'node:fs';
+
+const read = (path: string) => readFileSync(path, 'utf8');
+
+describe('public files', () => {
+  it('has immutable asset caching and a CSP without external origins', () => {
+    const headers = read('public/_headers');
+    expect(headers).toContain('/assets/*');
+    expect(headers).toContain('immutable');
+    const csp = headers.split('\n').find((l) => l.includes('Content-Security-Policy:'));
+    expect(csp).toBeDefined();
+    expect(csp).not.toMatch(/https?:\/\//);
+  });
+
+  it('has the 4 placeholder OG PNGs', () => {
+    for (const name of ['bash', 'bash-1call', 'burn', 'let-it-write']) {
+      const buf = readFileSync(`public/og/${name}.png`);
+      expect(buf.length).toBeGreaterThan(0);
+      expect([...buf.subarray(0, 8)]).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+    }
+  });
+
+  it('pins Node', () => {
+    expect(existsSync('.nvmrc')).toBe(true);
+    const pkg = JSON.parse(read('package.json')) as { engines?: { node?: string } };
+    expect(pkg.engines?.node).toBeTruthy();
+  });
+
+  it('uses no external font hosts', () => {
+    for (const file of ['index.html', 'src/index.css', 'src/styles/fonts.css']) {
+      expect(read(file)).not.toMatch(/fonts\.googleapis|fonts\.gstatic/);
+    }
+  });
+});
