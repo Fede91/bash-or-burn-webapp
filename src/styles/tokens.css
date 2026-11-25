@@ -30,6 +30,9 @@
   --max-width: 1400px;
   --gutter: 32px;
 
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-3: cubic-bezier(0.215, 0.61, 0.355, 1);
+
   /* Verdict identity colours: exactly four tokens. */
   --verdict-bash: #61edcc;
   --verdict-let-it-write: #f9e361;
