@@ -11,6 +11,7 @@ import {
   resetAnnouncement,
 } from './i18n/gauge-messages';
 import { t } from './i18n';
+import { track } from './lib/analytics';
 import { parseVerdictParam } from './lib/share';
 import { finalVerdict, provisionalZone, runningTotal, type Answers } from './lib/score';
 
@@ -93,7 +94,10 @@ export default function App() {
               onAnswer={(questionId, answerId) =>
                 setAnswers((prev) => ({ ...prev, [questionId]: answerId }))
               }
-              onFinish={() => setFinished(true)}
+              onFinish={() => {
+                track('verdict_reached', { verdict: finalVerdict(answers) });
+                setFinished(true);
+              }}
             />
           </>
         )

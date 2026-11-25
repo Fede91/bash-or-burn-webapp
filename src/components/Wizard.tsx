@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { questions } from '../data/questions';
 import { t } from '../i18n';
+import { track } from '../lib/analytics';
 import type { Answers } from '../lib/score';
 import Question from './Question';
 
@@ -11,7 +12,8 @@ interface WizardProps {
   onFinish: () => void;
 }
 
-const LAST = questions.length - 1;
+const TOTAL = questions.length;
+const LAST = TOTAL - 1;
 const pad = (n: number) => String(n).padStart(2, '0');
 
 function prefersReducedMotion(): boolean {
@@ -26,6 +28,13 @@ export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
   const [error, setError] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const mounted = useRef(false);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    track('wizard_started');
+  }, []);
 
   useEffect(() => {
     if (!mounted.current) {
@@ -55,6 +64,7 @@ export default function Wizard({ answers, onAnswer, onFinish }: WizardProps) {
       e.currentTarget.querySelector<HTMLInputElement>('input[type="radio"]')?.focus();
       return;
     }
+    track('question_answered', { step_index: step + 1, step_total: TOTAL });
     if (step === LAST) {
       setError(false);
       onFinish();

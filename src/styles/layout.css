@@ -56,10 +56,6 @@
   .brand:hover {
     color: var(--text);
   }
-  .brand-role {
-    color: var(--text-muted);
-    font: 400 11px/1 var(--font-mono);
-  }
   .nav-link {
     padding-block: 8px;
     margin-block: -8px;
@@ -151,10 +147,6 @@
     line-height: 1.5;
     text-wrap: pretty;
     animation: fade 0.9s var(--ease-out) 0.3s both;
-  }
-  .lead em {
-    font-style: normal;
-    color: var(--text);
   }
 
   .wizard {
@@ -433,9 +425,6 @@
   @media (max-width: 720px) {
     :root {
       --gutter: 20px;
-    }
-    .brand-role {
-      display: none;
     }
   }
 }

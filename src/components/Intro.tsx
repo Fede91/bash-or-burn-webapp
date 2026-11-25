@@ -14,9 +14,7 @@ export default function Intro() {
           {t('intro.title.line2')}
         </span>
       </h1>
-      <p className="lead">
-        {t('intro.lead')} <em>{t('intro.lead.how')}</em>
-      </p>
+      <p className="lead">{t('intro.lead')}</p>
     </section>
   );
 }

@@ -2,14 +2,19 @@ import { existsSync, readFileSync } from 'node:fs';
 
 const read = (path: string) => readFileSync(path, 'utf8');
 
+const POSTHOG = 'https://eu.i.posthog.com';
+
 describe('public files', () => {
-  it('has immutable asset caching and a CSP without external origins', () => {
+  it('has immutable asset caching and a CSP allowing only the PostHog origin', () => {
     const headers = read('public/_headers');
     expect(headers).toContain('/assets/*');
     expect(headers).toContain('immutable');
     const csp = headers.split('\n').find((l) => l.includes('Content-Security-Policy:'));
     expect(csp).toBeDefined();
-    expect(csp).not.toMatch(/https?:\/\//);
+    expect(csp?.match(/https?:\/\/[^\s;]+/g)).toEqual([POSTHOG, POSTHOG]);
+    for (const directive of ['script-src', 'connect-src']) {
+      expect(csp).toContain(`${directive} 'self' ${POSTHOG}`);
+    }
   });
 
   it('has the 4 placeholder OG PNGs', () => {
