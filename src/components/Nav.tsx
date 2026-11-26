@@ -3,12 +3,12 @@ import { track } from '../lib/analytics';
 import { splitTrailingArrow } from '../lib/gauge';
 import { CTA_URL } from './Cta';
 
-export default function Nav() {
+export default function Nav({ brandHref = '#top' }: { brandHref?: string }) {
   const { label, arrow } = splitTrailingArrow(t('nav.link'));
   return (
     <header className="nav">
       <div className="nav-start">
-        <a className="brand" href="#top">
+        <a className="brand" href={brandHref}>
           {t('nav.brand')}
         </a>
       </div>

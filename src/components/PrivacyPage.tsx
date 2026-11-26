@@ -1,0 +1,52 @@
+import { PRIVACY_BLOCKS } from '../data/privacy';
+import { t } from '../i18n';
+import Footer from './Footer';
+import Grain from './Grain';
+import Inline from './Inline';
+import Nav from './Nav';
+import SkipLink from './SkipLink';
+
+// The self-hosted mono subset has no U+2190, so the leading arrow in the copy is dropped
+// (the copy deck marks it optional).
+function BackLink() {
+  return (
+    <a className="doc-back" href="/">
+      {t('privacy.back').replace(/^\u2190\s*/, '')}
+    </a>
+  );
+}
+
+export default function PrivacyPage() {
+  return (
+    <>
+      <SkipLink target="#privacy" label={t('privacy.skip')} />
+      <Nav brandHref="/" />
+      <main id="privacy" className="doc" tabIndex={-1}>
+        <BackLink />
+        <h1>{t('privacy.title')}</h1>
+        {PRIVACY_BLOCKS.map((block) => {
+          if (block.type === 'ul') {
+            return (
+              <ul key={block.keys[0]}>
+                {block.keys.map((key) => (
+                  <li key={key}>
+                    <Inline text={t(key)} />
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+          const Tag = block.type;
+          return (
+            <Tag key={block.key}>
+              <Inline text={t(block.key)} />
+            </Tag>
+          );
+        })}
+        <BackLink />
+        <Footer />
+      </main>
+      <Grain />
+    </>
+  );
+}

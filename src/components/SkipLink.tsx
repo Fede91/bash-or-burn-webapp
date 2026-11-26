@@ -1,9 +1,14 @@
 import { t } from '../i18n';
 
-export default function SkipLink() {
+interface SkipLinkProps {
+  target?: string;
+  label?: string;
+}
+
+export default function SkipLink({ target = '#wizard', label = t('nav.skip') }: SkipLinkProps) {
   return (
-    <a className="skip-link" href="#wizard">
-      {t('nav.skip')}
+    <a className="skip-link" href={target}>
+      {label}
     </a>
   );
 }
