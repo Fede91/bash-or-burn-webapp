@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
+import itMessages from './i18n/it.json';
 
 const read = (path: string) => readFileSync(path, 'utf8');
 
@@ -23,6 +24,18 @@ describe('public files', () => {
       expect(buf.length).toBeGreaterThan(0);
       expect([...buf.subarray(0, 8)]).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
     }
+  });
+
+  it('lists the privacy page in the sitemap and gives it its own head', () => {
+    expect(read('public/sitemap.xml')).toContain(
+      'https://bashorburn.federicobagato.it/privacy</loc>',
+    );
+    const html = read('privacy.html');
+    expect(html).toContain(
+      '<link rel="canonical" href="https://bashorburn.federicobagato.it/privacy" />',
+    );
+    expect(html).toContain(`<title>${itMessages['privacy.meta.title']}</title>`);
+    expect(html).toContain(`content="${itMessages['privacy.meta.description']}"`);
   });
 
   it('pins Node', () => {

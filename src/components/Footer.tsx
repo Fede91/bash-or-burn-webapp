@@ -8,9 +8,16 @@ export default function Footer() {
   return (
     <footer className="foot">
       <p>{t('footer.legal', { piva: PIVA })}</p>
-      <a href={CTA_URL} rel="noopener" onClick={() => track('cta_clicked', { location: 'footer' })}>
-        {t('footer.link')}
-      </a>
+      <div className="foot-links">
+        <a href="/privacy">{t('footer.privacy')}</a>
+        <a
+          href={CTA_URL}
+          rel="noopener"
+          onClick={() => track('cta_clicked', { location: 'footer' })}
+        >
+          {t('footer.link')}
+        </a>
+      </div>
     </footer>
   );
 }

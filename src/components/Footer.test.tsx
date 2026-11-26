@@ -13,6 +13,14 @@ describe('Footer', () => {
     expect(container.querySelectorAll('p')).toHaveLength(1);
   });
 
+  it('links to the privacy notice before the federicobagato.it link', () => {
+    render(<Footer />);
+    const links = screen.getAllByRole('link');
+    expect(links[0]).toHaveTextContent(t('footer.privacy'));
+    expect(links[0]).toHaveAttribute('href', '/privacy');
+    expect(links[1]).toHaveTextContent(t('footer.link'));
+  });
+
   it('renders on the question and result screens', () => {
     render(<App />);
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
