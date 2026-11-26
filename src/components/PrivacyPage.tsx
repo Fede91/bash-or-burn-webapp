@@ -6,14 +6,12 @@ import Inline from './Inline';
 import Nav from './Nav';
 import SkipLink from './SkipLink';
 
+// The self-hosted mono subset has no U+2190, so the leading arrow in the copy is dropped
+// (the copy deck marks it optional).
 function BackLink() {
-  const [arrow, ...rest] = t('privacy.back').split(' ');
   return (
     <a className="doc-back" href="/">
-      <span className="arrow" aria-hidden="true">
-        {arrow}{' '}
-      </span>
-      {rest.join(' ')}
+      {t('privacy.back').replace(/^\u2190\s*/, '')}
     </a>
   );
 }

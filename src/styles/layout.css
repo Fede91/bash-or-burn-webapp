@@ -1245,21 +1245,22 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
-  .doc p,
-  .doc ul {
+  .doc > p,
+  .doc > ul {
     margin: 14px 0 0;
     color: var(--text-body);
     font: 400 16px/1.65 var(--font-sans);
     text-wrap: pretty;
     white-space: pre-line;
   }
-  .doc h1 + p {
+  .doc > h1 + p {
     margin-top: 0;
     color: var(--text-muted);
     font: 400 12px/1.4 var(--font-mono);
   }
-  .doc ul {
+  .doc > ul {
     padding-left: 20px;
+    list-style: disc;
   }
   .doc li + li {
     margin-top: 6px;
